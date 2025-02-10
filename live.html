@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VPNTON – Live</title>
+  <style>
+    :root {
+      --primary-color: #e0e0e0;
+      --background-color: #000;
+      --accent-color: #ff3d00;
+      --secondary-color: #111;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-family);
+      color: var(--primary-color);
+      background-color: var(--background-color);
+      background-image:
+        linear-gradient(135deg, rgba(255,255,255,0.02) 25%, transparent 25%),
+        linear-gradient(225deg, rgba(255,255,255,0.02) 25%, transparent 25%),
+        linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%),
+        linear-gradient(315deg, rgba(255,255,255,0.02) 25%, transparent 25%);
+      background-size: 50px 50px;
+      background-position: 0 0, 0 25px, 25px -25px, -25px 0;
+      line-height: 1.6;
+    }
+    /* Header и навигация */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1100;
+      background: var(--background-color);
+      padding: 20px 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+    nav a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+    nav a:hover, nav a:focus {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+    /* Hamburger и боковая панель */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .hamburger span {
+      height: 3px;
+      width: 25px;
+      background: var(--primary-color);
+      margin: 4px 0;
+      transition: all 0.3s ease;
+    }
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100%;
+      background: var(--background-color);
+      box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+      padding: 60px 20px;
+      transition: right 0.3s ease;
+      z-index: 1200;
+    }
+    .side-menu.open {
+      right: 0;
+    }
+    .side-menu a {
+      display: block;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+    /* Декоративные ячейки */
+    .decor-cell {
+      position: absolute;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 6px;
+      animation: pulse 4s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    /* Анимация появления */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeIn 1s forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Основной контейнер */
+    .container {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+    section {
+      padding: 40px 0;
+    }
+    /* Кастомный стрим-плеер */
+    .player-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      background: #000;
+      border: 2px solid var(--accent-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    /* Видео плеера */
+    #streamVideo {
+      width: 100%;
+      display: block;
+    }
+    /* Кастомные элементы управления плеером */
+    .player-controls {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 0;
+    }
+    .player-controls button {
+      background: var(--accent-color);
+      border: none;
+      padding: 8px 12px;
+      color: #000;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .player-controls button:hover {
+      background: #e64a19;
+    }
+    /* Секция комментариев */
+    .comments-section {
+      max-width: 800px;
+      margin: 40px auto;
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .comments-section h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .comment-form input[type="text"],
+    .comment-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 4px;
+      font-family: var(--font-family);
+      font-size: 1rem;
+      background: var(--secondary-color);
+      color: var(--primary-color);
+    }
+    .comment-form textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .comment-form button {
+      background: var(--accent-color);
+      border: none;
+      padding: 10px 20px;
+      color: #000;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .comment-form button:hover {
+      background: #e64a19;
+    }
+    .comments-list {
+      margin-top: 20px;
+    }
+    .comment-item {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 0;
+      font-size: 0.9rem;
+    }
+    /* Responsive */
+    @media (max-width:768px) {
+      nav { display: none; }
+      .hamburger { display: flex; }
+      .container { margin: 20px auto; }
+    }
+    @media (max-width:480px) {
+      .hamburger span { width: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Декоративные ячейки -->
+  <div class="decor-cell" style="width: 60px; height: 60px; top: 80px; left: 30px;"></div>
+  <div class="decor-cell" style="width: 80px; height: 80px; bottom: 100px; right: 30px;"></div>
+  
+  <!-- Header -->
+  <header class="fade-in" style="animation-delay: 0.2s;">
+    <div class="logo">VPNTON</div>
+    <nav>
+      <a href="index.html#vpn">VPN</a>
+      <a href="index.html#roadmap">ROADMAP</a>
+      <a href="index.html#tokenomics">ТОКЕНОМИКА</a>
+      <a href="index.html#team">КОМАНДА</a>
+      <a href="index.html#partnership">СОТРУДНИЧЕСТВО</a>
+      <a href="live.html">LIVE</a>
+    </nav>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+  
+  <!-- Боковая панель -->
+  <div class="side-menu" id="side-menu">
+    <a href="index.html#vpn" class="side-link">VPN</a>
+    <a href="index.html#roadmap" class="side-link">ROADMAP</a>
+    <a href="index.html#tokenomics" class="side-link">ТОКЕНОМИКА</a>
+    <a href="index.html#team" class="side-link">КОМАНДА</a>
+    <a href="index.html#partnership" class="side-link">СОТРУДНИЧЕСТВО</a>
+    <a href="live.html" class="side-link">LIVE</a>
+  </div>
+  
+  <!-- Основной контейнер -->
+  <div class="container">
+    <!-- Стрим-плеер -->
+    <section class="fade-in" style="animation-delay: 0.4s;">
+      <div class="player-wrapper">
+        <video id="streamVideo" preload="metadata" poster="https://via.placeholder.com/800x450?text=Стрим+заглушка">
+          <source src="stream.m3u8" type="application/x-mpegURL">
+          Ваш браузер не поддерживает HTML5 видео.
+        </video>
+        <div class="player-controls">
+          <button id="playPause">Пауза</button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Секция комментариев -->
+    <section class="comments-section fade-in" style="animation-delay: 0.6s;">
+      <h2>Комментарии</h2>
+      <div class="comment-form">
+        <input type="text" id="nickname" placeholder="Введите ваш ник" />
+        <textarea id="commentText" placeholder="Оставьте ваш комментарий..."></textarea>
+        <button id="sendComment" type="button">Отправить</button>
+      </div>
+      <div class="comments-list" id="commentsList">
+        <div class="comment-item">Пока нет комментариев. Будьте первым!</div>
+      </div>
+    </section>
+  </div>
+  
+  <script>
+    // Закрытие боковой панели при клике вне её
+    document.addEventListener('click', function(e) {
+      const sideMenu = document.getElementById('side-menu');
+      const hamburger = document.getElementById('hamburger');
+      if (sideMenu.classList.contains('open') &&
+          !e.target.closest('#side-menu') &&
+          !e.target.closest('#hamburger')) {
+        sideMenu.classList.remove('open');
+      }
+    });
+    
+    // Управление гамбургером
+    const hamburger = document.getElementById('hamburger');
+    const sideMenu = document.getElementById('side-menu');
+    hamburger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      sideMenu.classList.toggle('open');
+    });
+    document.querySelectorAll('.side-link').forEach(link => {
+      link.addEventListener('click', function() {
+        sideMenu.classList.remove('open');
+      });
+    });
+
+    // Кастомизация плеера
+    const streamVideo = document.getElementById('streamVideo');
+    const playPauseBtn = document.getElementById('playPause');
+    playPauseBtn.addEventListener('click', () => {
+      if (streamVideo.paused) {
+        streamVideo.play();
+        playPauseBtn.textContent = 'Пауза';
+      } else {
+        streamVideo.pause();
+        playPauseBtn.textContent = 'Воспроизвести';
+      }
+    });
+
+    // Комментарии с сохранением ника
+    const nicknameInput = document.getElementById('nickname');
+    const commentText = document.getElementById('commentText');
+    const sendCommentBtn = document.getElementById('sendComment');
+    const commentsList = document.getElementById('commentsList');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedNick = localStorage.getItem('userNick');
+      if (savedNick) {
+        nicknameInput.value = savedNick;
+      }
+    });
+
+    sendCommentBtn.addEventListener('click', () => {
+      const nick = nicknameInput.value.trim() || 'Аноним';
+      const comment = commentText.value.trim();
+      if (comment !== '') {
+        localStorage.setItem('userNick', nick);
+        const commentItem = document.createElement('div');
+        commentItem.classList.add('comment-item');
+        commentItem.textContent = nick + ': ' + comment;
+        commentsList.appendChild(commentItem);
+        commentText.value = '';
+      }
+    });
+  </script>
+</body>
+</html>

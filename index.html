@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VPNTON - Лендинг проекта</title>
+  <style>
+    :root {
+      --primary-color: #e0e0e0;
+      --background-color: #000;
+      --accent-color: #ff3d00;
+      --secondary-color: #111;
+      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --tooltip-bg: rgba(0, 0, 0, 0.85);
+      --timeline-line-width: 6px;
+      --max-content-width: 1200px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-family);
+      color: var(--primary-color);
+      background-color: var(--background-color);
+      background-image:
+        linear-gradient(135deg, rgba(255,255,255,0.02) 25%, transparent 25%),
+        linear-gradient(225deg, rgba(255,255,255,0.02) 25%, transparent 25%),
+        linear-gradient(45deg, rgba(255,255,255,0.02) 25%, transparent 25%),
+        linear-gradient(315deg, rgba(255,255,255,0.02) 25%, transparent 25%);
+      background-size: 50px 50px;
+      background-position: 0 0, 0 25px, 25px -25px, -25px 0px;
+      line-height: 1.6;
+    }
+    /* Центрирование основных блоков */
+    .container {
+      max-width: var(--max-content-width);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    /* Header и навигация */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1100;
+      background: var(--background-color);
+      padding: 20px 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--max-content-width);
+      margin: 0 auto;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+    nav a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+    nav a:hover, nav a:focus {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+    /* Hamburger для мобильных устройств */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .hamburger span {
+      height: 3px;
+      width: 25px;
+      background: var(--primary-color);
+      margin: 4px 0;
+      transition: all 0.3s ease;
+    }
+    /* Боковая панель для мобильных устройств */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100%;
+      background: var(--background-color);
+      box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+      transition: right 0.3s ease;
+      padding: 60px 20px;
+      z-index: 1200;
+    }
+    .side-menu.open {
+      right: 0;
+    }
+    .side-menu a {
+      display: block;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+    /* Плашка с информацией о токене */
+    .token-info {
+      background: linear-gradient(135deg, #000, #000);
+      padding: 15px 25px;
+      width: fit-content;
+      margin: 20px auto;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+    }
+    .token-info .price {
+      font-weight: bold;
+      font-size: 1.6rem;
+      color: var(--accent-color);
+    }
+    .token-info .mcap,
+    .token-info .holders {
+      font-size: 0.9rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: var(--secondary-color);
+      color: var(--primary-color);
+    }
+    .token-info .chart {
+      width: 120px;
+      height: 50px;
+      background: var(--secondary-color);
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    .token-info .chart:hover {
+      background-color: #ff3d00;
+    }
+    /* Секции и центральное выравнивание блоков */
+    section {
+      padding: 80px 20px;
+      position: relative;
+    }
+    .block-wrapper {
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: center;
+    }
+    .block {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      max-width: 800px;
+      width: 100%;
+    }
+    .block:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+    }
+    h2 {
+      font-size: 2.4rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    p, li {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+    ul {
+      list-style: disc inside;
+    }
+    /* Круговая диаграмма для токеномики */
+    .diagram-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 30px 0;
+      position: relative;
+    }
+    .diagram-wrapper {
+      position: relative;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    /* SVG-диаграмма */
+    #pieChart {
+      width: 300px;
+      height: 300px;
+    }
+    /* Tooltip для диаграммы */
+    #pieTooltip {
+      position: absolute;
+      background: var(--tooltip-bg);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      white-space: nowrap;
+      z-index: 2000;
+    }
+    /* Легенда диаграммы */
+    .diagram-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    /* Roadmap Section - Timeline */
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px 0;
+    }
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: var(--timeline-line-width);
+      background-color: var(--accent-color);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .timeline-item {
+      padding: 20px 30px;
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      width: 45%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+    .timeline-item:hover {
+      transform: scale(1.02);
+    }
+    .timeline-item.left {
+      left: 0;
+      text-align: right;
+    }
+    .timeline-item.right {
+      left: 55%;
+      text-align: left;
+    }
+    /* Circle for timeline items */
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: var(--background-color);
+      border: 4px solid var(--accent-color);
+      border-radius: 50%;
+      top: 20px;
+      z-index: 1;
+    }
+    .timeline-item.left::before {
+      right: -8px;
+    }
+    .timeline-item.right::before {
+      left: -8px;
+    }
+    @media (max-width:992px) {
+      .block { padding: 30px; }
+      h2 { font-size: 2.2rem; }
+    }
+    @media (max-width:768px) {
+      nav { display: none; }
+      .hamburger { display: flex; }
+      .token-info { flex-direction: column; text-align: center; gap: 10px; }
+      .block { padding: 20px; }
+      h2 { font-size: 2rem; }
+      /* Прижимаем заголовки по центру и разрешаем переполнение, если элементы требуют больше места */
+      header { justify-content: center; }
+      header .logo { order: -1; margin-bottom: 10px; }
+    }
+    @media (max-width:480px) {
+      .token-info .chart { width: 100px; height: 40px; }
+      .hamburger span { width: 20px; }
+      h2 { font-size: 1.8rem; }
+    }
+    /* Team section */
+    .team {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .team-member {
+      display: flex;
+      align-items: center;
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.3s ease;
+    }
+    .team-member:hover {
+      transform: scale(1.05);
+    }
+    .team-member img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-right: 20px;
+      border: 2px solid var(--accent-color);
+    }
+    footer {
+      padding: 40px;
+      text-align: center;
+      background: var(--background-color);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.9rem;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeIn 1s forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Decorative ячейки */
+    .decor-cell {
+      position: absolute;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 6px;
+      animation: pulse 4s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Декоративные ячейки -->
+  <div class="decor-cell" style="width: 60px; height: 60px; top: 100px; left: 50px;"></div>
+  <div class="decor-cell" style="width: 80px; height: 80px; top: 600px; right: 100px;"></div>
+  <div class="decor-cell" style="width: 50px; height: 50px; bottom: 150px; left: 150px;"></div>
+  
+  <!-- Header с логотипом и гамбургером -->
+  <header class="fade-in" style="animation-delay: 0.2s;">
+    <div class="logo">VPNdeTON</div>
+    <nav>
+      <a href="#vpn">VPN</a>
+      <a href="#roadmap">ROADMAP</a>
+      <a href="#tokenomics">ТОКЕНОМИКА</a>
+      <a href="#team">КОМАНДА</a>
+      <a href="#partnership">СОТРУДНИЧЕСТВО</a>
+      <a href="#" id="live-link">LIVE</a>
+    </nav>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+  
+  <!-- Боковая панель для мобильных устройств -->
+  <div class="side-menu" id="side-menu">
+    <a href="#vpn" class="side-link">VPN</a>
+    <a href="#roadmap" class="side-link">ROADMAP</a>
+    <a href="#tokenomics" class="side-link">ТОКЕНОМИКА</a>
+    <a href="#team" class="side-link">КОМАНДА</a>
+    <a href="#partnership" class="side-link">СОТРУДНИЧЕСТВО</a>
+    <a href="#" id="live-link-mobile" class="side-link">LIVE</a>
+  </div>
+  
+  <!-- Плашка с информацией о токене -->
+  <div class="token-info fade-in" style="animation-delay: 0.4s;">
+    <div class="price">$VPNTON: $1?</div>
+    <div class="mcap">MCap: $4.2k</div>
+    <div class="holders">Holders: 35</div>
+    <a href="https://example.com" class="chart">Торговать</a>
+  </div>
+  
+  <!-- VPN Section -->
+  <section id="vpn">
+    <div class="container block-wrapper fade-in" style="animation-delay: 0.6s;">
+      <div class="block">
+        <h2>О сервисе VPNdeTON</h2>
+        <p>VPNdeTON — это высокотехнологичный VPN-сервис, обеспечивающий безопасность, анонимность и свободу в сети. Приложения для Android, iOS и ПК позволяют пользоваться интернетом без ограничений.</p>
+        <p>Сейчас доступны тестовые серверы — оцените качество сервиса уже сегодня!</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Project Section -->
+  <section id="project">
+    <div class="container block-wrapper fade-in" style="animation-delay: 0.7s;">
+      <div class="block">
+        <h2>О проекте VPNTON</h2>
+        <p>VPNTON — это токен, созданный для экосистемы VPNdeTON. Он используется для покупки тарифных планов, выплат по реферальной программе и участия в эксклюзивных акциях. VPNTON стимулирует активность пользователей и поддержку проекта.</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Tokenomics Section с круговой диаграммой -->
+  <section id="tokenomics">
+    <div class="container block-wrapper fade-in" style="animation-delay: 0.8s;">
+      <div class="block">
+        <h2>Токеномика VPNTON</h2>
+        <ul>
+          <li><strong>Общее предложение:</strong> 1 000 000 000$VPNTON</li>
+          <li><strong>Распределение:</strong>
+            <ul>
+              <li>Реферальная программа и комьюнити: 40%</li>
+              <li>Развитие платформы и партнерство: 15%</li>
+              <li>Команда: 15%</li>
+              <li>Резервный фонд: 30%</li>
+            </ul>
+          </li>
+          <li><strong>Механизмы:</strong> Регулярное сжигание части токенов для контроля инфляции.</li>
+        </ul>
+        <div class="diagram-wrapper">
+          <svg id="pieChart" viewBox="0 0 300 300">
+            <!-- Сегмент 1: 40% (0-144°), midAngle = 72° -->
+            <g class="pie-segment" data-tooltip="Реферальная программа и комьюнити: 40% (400M)">
+              <path d="M250,150 A100,100 0 0,1 69.1,208.78 L150,150 Z" fill="#ff3d00"></path>
+            </g>
+            <!-- Сегмент 2: 30% (144°-252°), midAngle = 198° -->
+            <g class="pie-segment" data-tooltip="Развитие платформы и партнерство: 15% (150M)">
+              <path d="M69.1,208.78 A100,100 0 0,1 119.1,54.89 L150,150 Z" fill="#00bcd4"></path>
+            </g>
+            <!-- Сегмент 3: 20% (252°-324°), midAngle = 288° -->
+            <g class="pie-segment" data-tooltip="Команда: 15% (150M)">
+              <path d="M119.1,54.89 A100,100 0 0,1 230.9,91.22 L150,150 Z" fill="#8bc34a"></path>
+            </g>
+            <!-- Сегмент 4: 10% (324°-360°), midAngle = 342° -->
+            <g class="pie-segment" data-tooltip="Резервный фонд: 30% (300M)">
+              <path d="M230.9,91.22 A100,100 0 0,1 250,150 L150,150 Z" fill="#ffeb3b"></path>
+            </g>
+          </svg>
+          <div id="pieTooltip"></div>
+          <div class="diagram-legend">
+            <div class="legend-item"><div class="legend-color" style="background:#ff3d00;"></div> Реферальная программа и комьюнити (40%)</div>
+            <div class="legend-item"><div class="legend-color" style="background:#00bcd4;"></div> Развитие платформы и партнерство (15%)</div>
+            <div class="legend-item"><div class="legend-color" style="background:#8bc34a;"></div> Команда (15%)</div>
+            <div class="legend-item"><div class="legend-color" style="background:#ffeb3b;"></div> Резервный фонд (30%)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Roadmap Section -->
+  <section id="roadmap">
+    <div class="container block-wrapper fade-in" style="animation-delay: 1s;">
+      <h2>Roadmap</h2>
+      <div class="timeline">
+        <div class="timeline-item left">
+          <h3>Этап 1</h3>
+          <p>Запуск тестовых серверов VPNdeTON и первичное распространение $VPNTON, посредством запуска на Mempad.</p>
+        </div>
+        <div class="timeline-item right">
+          <h3>Этап 2</h3>
+          <p>Реализация мобильных приложений (Android, iOS) и интеграция платежных функций с $VPNTON.</p>
+        </div>
+        <div class="timeline-item left">
+          <h3>Этап 3</h3>
+          <p>Создание многоуровневой реферальной программы с щедрым вознаграждением.</p>
+        </div>
+        <div class="timeline-item right">
+          <h3>Этап 4</h3>
+          <p>Запуск основной сети, улучшение сервиса и расширение функционала экосистемы. Полностью анонимные одиночные сервера</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Team Section -->
+  <section id="team">
+    <div class="container block-wrapper fade-in" style="animation-delay: 1.2s;">
+      <div class="block">
+        <h2>Наша Команда</h2>
+        <div class="team">
+          <div class="team-member">
+            <img src="https://via.placeholder.com/80" alt="Аватар">
+            <div>
+              <h3>Askar</h3>
+              <p>Основатель &amp; CEO</p>
+            </div>
+          </div>
+          <div class="team-member">
+            <img src="https://via.placeholder.com/80" alt="Аватар">
+            <div>
+              <style>
+                .container-flex {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                }
+                .name {
+                  font-size: 20px;
+                  font-weight: bold;
+                }
+                .info {
+                  font-size: 20px;
+                  color: lightblue;
+                }
+              </style>
+              <div class="container-flex">
+                <div class="name">Neztrix <span class="info">(предпочел остаться анонимным)</span></div>
+                <p>Разработчик</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Partnership Section -->
+  <section id="partnership">
+    <div class="container block-wrapper fade-in" style="animation-delay: 1.4s;">
+      <div class="block">
+        <h2>Сотрудничество</h2>
+        <p>Мы открыты для новых партнерских проектов и инвестиций. Если у вас есть интересное предложение, свяжитесь с нами!</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="fade-in" style="animation-delay: 1.6s;">
+    <p>&copy; 2025 VPNTON. Все права защищены.</p>
+  </footer>
+  
+  <script>
+    // Переход на страницу LIVE
+    document.getElementById('live-link').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = 'live.html';
+    });
+    document.getElementById('live-link-mobile').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = 'live.html';
+    });
+    
+    // Управление боковым меню (гамбургер)
+    document.addEventListener('click', function(e) {
+      const sideMenu = document.getElementById('side-menu');
+      const hamburger = document.getElementById('hamburger');
+      if (sideMenu.classList.contains('open') &&
+          !e.target.closest('#side-menu') &&
+          !e.target.closest('#hamburger')) {
+        sideMenu.classList.remove('open');
+      }
+    });
+    
+    // Управление гамбургером
+    const hamburger = document.getElementById('hamburger');
+    const sideMenu = document.getElementById('side-menu');
+    hamburger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      sideMenu.classList.toggle('open');
+    });
+    document.querySelectorAll('.side-link').forEach(link => {
+      link.addEventListener('click', function() {
+        sideMenu.classList.remove('open');
+      });
+    });
+    
+    // Интерактивная круговая диаграмма
+    const pieSegments = document.querySelectorAll('.pie-segment');
+    const tooltip = document.getElementById('pieTooltip');
+    const offsetDistance = 10; // расстояние отъезда при hover/click
+    
+    // Функция для расчёта смещения по углу
+    function getOffsetCoords(midAngle) {
+      const rad = midAngle * Math.PI / 180;
+      return {
+        dx: offsetDistance * Math.cos(rad),
+        dy: offsetDistance * Math.sin(rad)
+      };
+    }
+    
+    // midAngle для каждого сегмента (задан вручную)
+    const midAngles = [72, 198, 288, 342];
+    
+    pieSegments.forEach((segment, index) => {
+      segment.addEventListener('mouseover', (e) => {
+        const {dx, dy} = getOffsetCoords(midAngles[index]);
+        segment.setAttribute('transform', `translate(${dx}, ${dy})`);
+        tooltip.innerText = segment.getAttribute('data-tooltip');
+        tooltip.style.opacity = 1;
+      });
+      segment.addEventListener('mouseout', () => {
+        segment.removeAttribute('transform');
+        tooltip.style.opacity = 0;
+      });
+      segment.addEventListener('click', (e) => {
+        // Переключаем "фиксацию" выделения для мобильных устройств
+        if (segment.getAttribute('data-active') === 'true') {
+          segment.removeAttribute('transform');
+          segment.setAttribute('data-active', 'false');
+          tooltip.style.opacity = 0;
+        } else {
+          const {dx, dy} = getOffsetCoords(midAngles[index]);
+          segment.setAttribute('transform', `translate(${dx}, ${dy})`);
+          segment.setAttribute('data-active', 'true');
+          tooltip.innerText = segment.getAttribute('data-tooltip');
+          tooltip.style.opacity = 1;
+        }
+      });
+      segment.addEventListener('mousemove', (e) => {
+        tooltip.style.left = (e.pageX + 10) + 'px';
+        tooltip.style.top = (e.pageY + 10) + 'px';
+      });
+    });
+  </script>
+</body>
+</html>
